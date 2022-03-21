@@ -1,0 +1,16 @@
+{% set navigation %}
+<nav>
+  <ul>
+    <li><a href="/">Главная</a></li>
+    <li><a href="/about">О нас</a></li>
+    {% if not current_user.is_authenticated %}
+    <li><a href="/signin">Вход</a></li>
+    <li><a href="/signup">Регистрация</a></li>
+    {% endif %} {% if current_user.is_authenticated %}
+    <li><a href="/feedback">Отзыв</a></li>
+    <li><a href="/logout">Выйти</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+{% endset %}

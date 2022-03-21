@@ -1,0 +1,6 @@
+{% import 'components/test.html' as header with context %} {% extends
+'layouts/base.html' %} {% block content %}
+<header>{{ header.navigation }}</header>
+<main>{% block main %} {% endblock %}</main>
+<footer>{{ header.navigation }}</footer>
+{% endblock %}

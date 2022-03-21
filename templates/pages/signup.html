@@ -1,0 +1,8 @@
+{% extends 'layouts/default.html' %} {% block head %}
+<title>Регистрация</title>
+{% endblock %} {% block main %}
+<h1>Регистрация</h1>
+<form method="post" action="">
+  {{form.hidden_tag()}} {{form.username}} {{form.password}} {{form.submit}}
+</form>
+{% endblock %}
