@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 
@@ -26,11 +26,19 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# MODELS
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
+class Feedback(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    theme = db.Column(db.String(20), nullable=False)
+    content = db.Column(db.String(80), nullable=False)
+    userid = db.Column(db.Integer, primary_key=False)
+
+# FORMS
 class SignUpForm(FlaskForm): 
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль"})
@@ -47,6 +55,10 @@ class SignInForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль"})
     submit = SubmitField("Войти")
 
+class FeedBackForm(FlaskForm):
+    theme = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Тема"})
+    content = TextAreaField(validators=[InputRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Сообщение"})
+    submit = SubmitField("Отправить")
 
 
 @app.route("/")
@@ -88,10 +100,16 @@ def signup():
 
     return render_template("pages/signup.html", form=form)
 
-@app.route("/feedback")
+@app.route("/feedback", methods=["GET", "POST"])
 @login_required
 def feedback():
-    return render_template("pages/feedback.html")
+    form = FeedBackForm()
+    if form.validate_on_submit():
+        new_feedback = Feedback(theme=form.theme.data, content=form.content.data, userid=current_user.id)
+        db.session.add(new_feedback)
+        db.session.commit()
+        return render_template("pages/feedback.html", form=form, sended=True)
+    return render_template("pages/feedback.html", form=form, sended=False)
 
 if __name__ == '__main__':
     app.run(debug=True)

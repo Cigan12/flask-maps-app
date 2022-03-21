@@ -2,4 +2,7 @@
 <title>Отзыв</title>
 {% endblock %} {% block main %}
 <h1>Отзыв</h1>
+<form method="post" action="">
+  {{form.hidden_tag()}} {{form.theme}} {{form.content}} {{form.submit}}
+</form>
 {% endblock %}
