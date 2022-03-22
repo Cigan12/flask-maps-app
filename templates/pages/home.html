@@ -1,5 +1,18 @@
 {% extends 'layouts/default.html' %} {% block head %}
 <title>Главная</title>
 {% endblock %} {% block main %}
-<h1>Главная</h1>
+<div class="content">
+  <div>
+    <h1 class="title">Исследуйте слои почв!</h1>
+    <p class="description">
+      Здесь Вы сможете узнать полезную и интересную информацию о слоях почв
+    </p>
+    <div class="action-buttons">
+      <a class="button" href="/about">Узнать о нас</a>
+      <a class="button-link" href="/signup">Регистрация</a>
+    </div>
+  </div>
+  <img src="{{ url_for('static', filename='img/home_illustration.svg')}}" />
+</div>
+
 {% endblock %}

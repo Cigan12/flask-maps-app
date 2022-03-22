@@ -40,9 +40,9 @@ class Feedback(db.Model, UserMixin):
 
 # FORMS
 class SignUpForm(FlaskForm): 
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль"})
-    submit = SubmitField("Зарегистрироваться")
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя", "class": "input"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль", "class": "input"})
+    submit = SubmitField("Зарегистрироваться", render_kw={"class": "button form_btn"})
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(username=username.data).first()
@@ -51,14 +51,14 @@ class SignUpForm(FlaskForm):
 
 
 class SignInForm(FlaskForm): 
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль"})
-    submit = SubmitField("Войти")
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя", "class": "input"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль", "class": "input"})
+    submit = SubmitField("Войти", render_kw={"class": "button form_btn"})
 
 class FeedBackForm(FlaskForm):
-    theme = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Тема"})
-    content = TextAreaField(validators=[InputRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Сообщение"})
-    submit = SubmitField("Отправить")
+    theme = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Тема", "class": "input"})
+    content = TextAreaField(validators=[InputRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Сообщение", "class": "textarea"})
+    submit = SubmitField("Отправить", render_kw={"class": "button form_btn"})
 
 
 @app.route("/")
@@ -112,5 +112,5 @@ def feedback():
     return render_template("pages/feedback.html", form=form, sended=False)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
 

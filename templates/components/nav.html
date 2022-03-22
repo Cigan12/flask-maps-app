@@ -1,0 +1,20 @@
+{% set navigation %}
+<nav class="nav">
+  <a class="nav-link" href="/">Главная</a>
+  <a class="nav-link" href="/about">О нас</a>
+  {% if current_user.is_authenticated %}
+  <a class="nav-link" href="/feedback">Отзыв</a>
+  <a class="nav-link" href="/map">Карта</a>
+  {% endif %}
+</nav>
+<div class="auth-buttons">
+  {% if not current_user.is_authenticated and request.path != '/signup' and
+  request.path != '/signin' %}
+  <a class="nav-link" href="/signin">Войти</a>
+  <a class="button" href="/signup">Регистрация</a>
+  {% endif %} {% if current_user.is_authenticated %}
+  <a class="nav-link" href="/logout">Выйти</a>
+  {% endif %}
+</div>
+
+{% endset %} class="nav-link"

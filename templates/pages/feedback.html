@@ -1,8 +1,17 @@
 {% extends 'layouts/default.html' %} {% block head %}
 <title>Отзыв</title>
 {% endblock %} {% block main %}
-<h1>Отзыв</h1>
-<form method="post" action="">
-  {{form.hidden_tag()}} {{form.theme}} {{form.content}} {{form.submit}}
-</form>
+<div class="content">
+  <form method="post" action="">
+    <h1 class="title">Оставьте отзыв</h1>
+    {{form.hidden_tag()}}
+    <label for="theme" class="label">Тема</label>
+    {{form.theme}}
+    <label for="content" class="label">Сообщение</label>
+    {{form.content}} {{form.submit}}
+  </form>
+
+  <img src="{{ url_for('static', filename='img/feedback_illustration.svg')}}" />
+</div>
+
 {% endblock %}
