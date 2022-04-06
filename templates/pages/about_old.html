@@ -1,0 +1,21 @@
+{% extends 'layouts/default.html' %} {% block head %}
+<title>О нас</title>
+{% endblock %} {% block main %}
+<div class="content">
+  <div>
+    <h1 class="title">О нас</h1>
+    <p class="description">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
+      temporibus accusantium accusamus ad fugiat ab saepe possimus provident
+      eos, totam fugit suscipit quo perspiciatis excepturi soluta veritatis qui
+      beatae sed nobis repellat, maxime deleniti voluptatem. Cupiditate esse
+      amet omnis exercitationem reiciendis, illo officiis illum. Explicabo quo
+      ut, nihil, amet repellendus qui repudiandae, eos libero corporis atque
+      voluptates expedita commodi quidem fugiat. Eligendi modi nemo quos
+      laboriosam.
+    </p>
+  </div>
+  <img src="{{ url_for('static', filename='img/aboutus_illustration.svg')}}" />
+</div>
+
+{% endblock %}

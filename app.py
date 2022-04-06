@@ -5,6 +5,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
+from flask import request
 
 
 
@@ -40,9 +41,9 @@ class Feedback(db.Model, UserMixin):
 
 # FORMS
 class SignUpForm(FlaskForm): 
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя", "class": "input"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль", "class": "input"})
-    submit = SubmitField("Зарегистрироваться", render_kw={"class": "button form_btn"})
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя", "class": "form-control"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль", "class": "form-control"})
+    submit = SubmitField("Зарегистрироваться", render_kw={"class": "form-control submit px-3"})
 
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(username=username.data).first()
@@ -51,23 +52,36 @@ class SignUpForm(FlaskForm):
 
 
 class SignInForm(FlaskForm): 
-    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя", "class": "input"})
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль", "class": "input"})
-    submit = SubmitField("Войти", render_kw={"class": "button form_btn"})
+    username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Имя", "class": "form-control"})
+    password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Пароль", "class": "form-control"})
+    submit = SubmitField("Войти", render_kw={"class": "form-control submit px-3"})
 
 class FeedBackForm(FlaskForm):
-    theme = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Тема", "class": "input"})
-    content = TextAreaField(validators=[InputRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Сообщение", "class": "textarea"})
-    submit = SubmitField("Отправить", render_kw={"class": "button form_btn"})
+    theme = StringField(validators=[InputRequired(), Length(min=1, max=20)], render_kw={"placeholder": "Тема", "class": "form-control"})
+    content = TextAreaField(validators=[InputRequired(), Length(min=4, max=200)], render_kw={"placeholder": "Сообщение", "class": "form-control"})
+    submit = SubmitField("Отправить", render_kw={"class": "form-control submit px-3"})
 
 
 @app.route("/")
 def home():
-    return render_template("pages/home.html")
+    feedbackForm = FeedBackForm()
+    return render_template("pages/home.html", feedbackForm=feedbackForm, sended=False)
+
+@app.route("/team")
+def team():
+    feedbackForm = FeedBackForm()
+    return render_template("pages/team.html", feedbackForm=feedbackForm, sended=False)
 
 @app.route("/about")
 def about():
-    return render_template("pages/about.html")
+    feedbackForm = FeedBackForm()
+    return render_template("pages/about.html", feedbackForm=feedbackForm, sended=False)
+
+@app.route("/contact")
+def contact():
+    feedbackForm = FeedBackForm()
+    return render_template("pages/contact.html", feedbackForm=feedbackForm, sended=False)
+
 
 
 @app.route("/signin", methods=["GET", "POST"])
@@ -100,16 +114,14 @@ def signup():
 
     return render_template("pages/signup.html", form=form)
 
-@app.route("/feedback", methods=["GET", "POST"])
+@app.route("/feedback", methods=["POST"])
 @login_required
 def feedback():
-    form = FeedBackForm()
-    if form.validate_on_submit():
-        new_feedback = Feedback(theme=form.theme.data, content=form.content.data, userid=current_user.id)
-        db.session.add(new_feedback)
-        db.session.commit()
-        return render_template("pages/feedback.html", form=form, sended=True)
-    return render_template("pages/feedback.html", form=form, sended=False)
+    feedbackForm = FeedBackForm()
+    new_feedback = Feedback(theme=feedbackForm.theme.data, content=feedbackForm.content.data, userid=current_user.id)
+    db.session.add(new_feedback)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)

@@ -1,0 +1,29 @@
+{% extends 'layouts/default.html' %} {% block head %}
+<title>Регистрация</title>
+{% endblock %} {% block main %}
+<div class="content-center">
+  <div class="form">
+    <form method="post" action="">
+      <div class="form-links">
+        <a class="form-link" href="/signin">Вход</a>
+        <a class="form-link active" href="/signup">Регистрация</a>
+      </div>
+      {{form.hidden_tag()}}
+      <label for="username" class="label">Имя</label>
+      {{form.username}}
+      <label for="password" class="label">Пароль</label>
+      {{form.password}} {{form.submit}}
+    </form>
+    <div class="hello-block">
+      <div>
+        <img
+          src="{{url_for('static', filename='img/logo.svg')}}"
+          width="82"
+          height="87"
+        />
+        <h5 class="hello-text">Добро пожаловать!</h5>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
