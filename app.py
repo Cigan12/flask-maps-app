@@ -6,6 +6,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask import request
+import folium
+
 
 
 
@@ -122,6 +124,12 @@ def feedback():
     db.session.add(new_feedback)
     db.session.commit()
     return redirect(url_for('home'))
+
+
+@app.route('/map')
+def render_map():
+    feedbackForm = FeedBackForm()
+    return render_template('pages/map.html', feedbackForm=feedbackForm, sended=False)
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
